@@ -46,7 +46,7 @@ export user = (id) ->
     [type, skin] = if uuidIsSlim(id) then ["alex", textureAlex] else ["steve", textureSteve]
     skinUrl = "http://assets.mojang.com/SkinTemplates/#{type}.png"
   if profile.legacy || profile.demo
-    date = null
+    date = await created(id, profile.name)
   else
     date = await created(id, profile.name)
   response =
@@ -76,7 +76,7 @@ export user = (id) ->
 # @param {integer} side - Determines a left or right binary search.
 # @param {boolean} accurate - Whether the results can be considered accurate.
 # @returns {date} Approximate date of user creation or null if not accurate.
-export created = (id, name, lower = 1242518400000, upper = Math.floor(Date.now()), side = 0, accurate = false) ->
+export created = (id, name, lower = 1230811200000, upper = Math.floor(Date.now()), side = 0, accurate = false) -> # original: 1242518400000, new fixed one: 1230811200000
   unless date = await BIRTHDAYS.get(id, "text")
     middle = lower + Math.floor((upper - lower) / 2)
     if lower.asDay() == upper.asDay()
